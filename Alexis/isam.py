@@ -120,8 +120,13 @@ class Page:
         elif self.overflow_page == None:
             # Si la página ya está llena y no tiene página de overflow
             new_page = Page()
+            new_page.level = self.level + 1
             new_page.overflow = True
-            new_page.insert(new_node, full_tree)
+            if new_node.node_id < self.right_node.node_id:
+                new_page.insert(new_node, full_tree)
+            else:
+                new_page.insert(self.right_node, full_tree)
+                self.right_node = new_node
             new_page.next_page = self.next_page
             self.next_page = new_page
             self.overflow_page = new_page
@@ -436,10 +441,10 @@ class Isam:
         return graph
 
     # Muestra la estructura de forma gráfica
-    def show(self):
-        graph = Digraph("graph", node_attr={"shape": "record"}, graph_attr={"nodesep": ".5", "ranksep": "2", "splines": "line"})
+    def draw(self, name="graph", show=False):
+        graph = Digraph(name, node_attr={"shape": "record"}, graph_attr={"nodesep": ".5", "ranksep": "1", "splines": "line"})
         graph = self.__edit_graph(self.root, graph)
-        graph.render("graph", format="png", view=True)
+        graph.render(name, format="png", view=show)
 
     # Crea un nuevo nivel de páginas hijo para todas las páginas
     # en el último nivel. Aplica sólo cuando el árbol tiene menos de
@@ -643,3 +648,15 @@ class Isam:
     # Mueve una posición a la izquierda al nodo con el node_id indicado
     def left_shift(self, node_id):
         return self.__left_shift(node_id, self.root)
+
+    # Devuelve una lista con todos los nodos de la estructura
+    def get_all(self):
+        nodes = []
+        aux = self.leftmost
+        while aux != None:
+            if aux.left_node != None:
+                nodes.append(aux.left_node)
+            if aux.right_node != None:
+                nodes.append(aux.right_node)
+            aux = aux.next_page
+        return nodes
