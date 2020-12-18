@@ -462,38 +462,184 @@ class Isam:
         else:
             return 1
 
-    # Mueve una posición a la derecha a la página que contenga el nodo
-    # con el node_id indicado
-    def __right_shift_sp(node_id):
-        pass
+    def __right_shift_sp(self, node_id, page):
+        if not page.leaf:
+            if node_id < page.left_node.node_id:
+                code = self.__right_shift_sp(node_id, page.left)
+            elif page.right_node != None:
+                if node_id >= page.left_node.node_id and node_id < page.right_node.node_id:
+                    code = self.__right_shift_sp(node_id, page.mid)
+                if node_id >= page.right_node.node_id:
+                    code = self.__right_shift_sp(node_id, page.right)
+            else:
+                code = self.__right_shift_sp(node_id, page.mid)
+            self.update_level(page.level)
+            return code
+        else:
+            if page.left_node != None and page.left_node.node_id == node_id:
+                if page.right_sister != None:
+                    code = self.__right_shift_sp(node_id, page.right_sister)
+                    if code == 0:
+                        page.left_node = None
+                        self.update_level(page.level)
+                        return 0
+                    else:
+                        return 1
+                else:
+                    return 1
+            elif page.left_node != None and page.left_node.node_id != node_id:
+                if page.right_sister != None:
+                    code = self.__right_shift_sp(node_id, page.right_sister)
+                    if code == 0:
+                        page.left_node = page.left_sister.left_node
+                        return 0
+                    else:
+                        return 1
+                else:
+                    return 1
+            elif page.empty:
+                page.left_node = page.left_sister.left_node
+                return 0
+            else:
+                return 1
 
     # Mueve una posición a la derecha a la página que contenga el nodo
     # con el node_id indicado
-    def right_shift_sp(node_id):
-        pass
+    def right_shift_sp(self, node_id):
+        return self.__right_shift_sp(node_id, self.root)
+
+    def __left_shift_sp(self, node_id, page):
+        if not page.leaf:
+            if node_id < page.left_node.node_id:
+                code = self.__left_shift_sp(node_id, page.left)
+            elif page.right_node != None:
+                if node_id >= page.left_node.node_id and node_id < page.right_node.node_id:
+                    code = self.__left_shift_sp(node_id, page.mid)
+                if node_id >= page.right_node.node_id:
+                    code = self.__left_shift_sp(node_id, page.right)
+            else:
+                code = self.__left_shift_sp(node_id, page.mid)
+            self.update_level(page.level)
+            return code
+        else:
+            if page.left_node != None and page.left_node.node_id == node_id:
+                if page.left_sister != None:
+                    code = self.__left_shift_sp(node_id, page.left_sister)
+                    if code == 0:
+                        page.left_node = None
+                        self.update_level(page.level)
+                        return 0
+                    else:
+                        return 1
+                else:
+                    return 1
+            elif page.left_node != None and page.left_node.node_id != node_id:
+                if page.left_sister != None:
+                    code = self.__left_shift_sp(node_id, page.left_sister)
+                    if code == 0:
+                        page.left_node = page.right_sister.left_node
+                        return 0
+                    else:
+                        return 1
+                else:
+                    return 1
+            elif page.empty:
+                page.left_node = page.right_sister.left_node
+                return 0
+            else:
+                return 1
 
     # Mueve una posición a la izquierda a la página que contenga el nodo
     # con el node_id indicado
-    def __left_shift_sp(node_id, page):
-        pass
+    def left_shift_sp(self, node_id):
+        return self.__left_shift_sp(node_id, self.root)
 
-    # Mueve una posición a la izquierda a la página que contenga el nodo
-    # con el node_id indicado
-    def left_sifht_sp(node_id):
-        pass
+    def __right_shift(self, node_id, page):
+        if not page.leaf:
+            if node_id < page.left_node.node_id:
+                code = self.__right_shift(node_id, page.left)
+            elif page.right_node != None:
+                if node_id >= page.left_node.node_id and node_id < page.right_node.node_id:
+                    code = self.__right_shift(node_id, page.mid)
+                if node_id >= page.right_node.node_id:
+                    code = self.__right_shift(node_id, page.right)
+            else:
+                code = self.__right_shift(node_id, page.mid)
+            self.update_level(page.level)
+            return code
+        else:
+            is_left_node = page.left_node != None and page.left_node.node_id == node_id
+            is_right_node = page.right_node != None and page.right_node.node_id == node_id
+            if is_left_node or is_right_node:
+                if page.right_sister != None:
+                    code = self.__right_shift(node_id, page.right_sister)
+                    if code == 0:
+                        page.right_sister.left_node = page.right_node
+                        page.right_node = None
+                        if is_left_node:
+                            page.right_node = page.left_node
+                            page.left_node = None
+                        return 0
+                    else:
+                        pass
+                else:
+                    return 1
+            else:
+                if page.full:
+                    code = self.__right_shift(node_id, page.right_sister)
+                    if code == 0:
+                        page.right_sister.left_node = page.right_node
+                        page.right_node = page.left_node
+                        page.left_node = None
+                    return code
+                else:
+                    page.right_node = page.left_node
+                    page.left_node =  None
+                    return 0
 
     # Mueve una posición a la derecha al nodo con el node_id indicado
-    def __right_shift(node_id):
-        pass
+    def right_shift(self, node_id):
+        return self.__right_shift(node_id, self.root)
 
-    # Mueve una posición a la derecha al nodo con el node_id indicado
-    def right_shift(node_id):
-        pass
-    
-    # Mueve una posición a la izquierda al nodo con el node_id indicado
-    def __left_shift(node_id, page):
-        pass
+    def __left_shift(self, node_id, page):
+        if not page.leaf:
+            if node_id < page.left_node.node_id:
+                code = self.__left_shift(node_id, page.left)
+            elif page.right_node != None:
+                if node_id >= page.left_node.node_id and node_id < page.right_node.node_id:
+                    code = self.__left_shift(node_id, page.mid)
+                if node_id >= page.right_node.node_id:
+                    code = self.__left_shift(node_id, page.right)
+            else:
+                code = self.__left_shift(node_id, page.mid)
+            self.update_level(page.level)
+            return code
+        else:
+            is_left_node = page.left_node != None and page.left_node.node_id == node_id
+            is_right_node = page.right_node != None and page.right_node.node_id == node_id
+            if is_left_node or is_right_node:
+                aux = self.leftmost
+                while aux != None:
+                    if aux.empty:
+                        aux.left_node = aux.right_sister.left_node
+                        aux.right_sister.left_node = None
+                        if aux.left_node.node_id == node_id:
+                            return 0
+                    elif aux.full:
+                        if aux.left_node.node_id == node_id or aux.right_node.node_id == node_id:
+                            return 0
+                    else:
+                        aux.right_node = aux.right_sister.left_node
+                        aux.right_sister.left_node = None
+                        if aux.left_node.node_id == node_id or aux.right_node.node_id == node_id:
+                            return 0
+                    self.update_level(1)
+                    self.update_level(0)
+                    aux = aux.right_sister
+                return 1
+            else:
+                return 1
 
     # Mueve una posición a la izquierda al nodo con el node_id indicado
-    def left_shift(node_id):
-        pass
+    def left_shift(self, node_id):
+        return self.__left_shift(node_id, self.root)
