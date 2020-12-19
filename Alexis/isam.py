@@ -117,16 +117,21 @@ class Page:
                 return 4
         elif not full_tree:
             return 3
+        elif self.level == 2 and (new_node.node_id > self.right_node.node_id or new_node.node_id < self.left_node.node_id):
+            if new_node.node_id > self.right_node.node_id:
+                aux = self.right_node
+                self.right_node = new_node
+                self.insert(aux, full_tree)
+            elif new_node.node_id < self.left_node.node_id:
+                aux = self.left_node
+                self.left_node = new_node
+                self.insert(aux, full_tree)
         elif self.overflow_page == None:
             # Si la página ya está llena y no tiene página de overflow
             new_page = Page()
             new_page.level = self.level + 1
             new_page.overflow = True
-            if new_node.node_id < self.right_node.node_id:
-                new_page.insert(new_node, full_tree)
-            else:
-                new_page.insert(self.right_node, full_tree)
-                self.right_node = new_node
+            new_page.insert(new_node, full_tree)
             new_page.next_page = self.next_page
             self.next_page = new_page
             self.overflow_page = new_page
@@ -388,8 +393,8 @@ class Isam:
             aux = page
             while aux != None:
                 if aux.mid != None and aux.right != None:
-                    aux.left_node = aux.mid.lowest_child
-                    aux.right_node = aux.right.lowest_child
+                    aux.left_node = aux.mid.leftmost().left_node
+                    aux.right_node = aux.right.leftmost().left_node
                 aux = aux.right_sister
             return 0
         else:
@@ -527,30 +532,35 @@ class Isam:
             self.update_level(page.level)
             return code
         else:
-            if page.left_node != None and page.left_node.node_id == node_id:
-                if page.left_sister != None:
-                    code = self.__left_shift_sp(node_id, page.left_sister)
-                    if code == 0:
-                        page.left_node = None
-                        self.update_level(page.level)
-                        return 0
-                    else:
-                        return 1
-                else:
-                    return 1
-            elif page.left_node != None and page.left_node.node_id != node_id:
-                if page.left_sister != None:
-                    code = self.__left_shift_sp(node_id, page.left_sister)
-                    if code == 0:
-                        page.left_node = page.right_sister.left_node
-                        return 0
-                    else:
-                        return 1
-                else:
-                    return 1
-            elif page.empty:
-                page.left_node = page.right_sister.left_node
-                return 0
+            is_left_node = page.left_node != None and page.left_node.node_id == node_id
+            is_right_node = page.right_node != None and page.right_node.node_id == node_id
+            if is_left_node or is_right_node:
+                aux = self.leftmost
+                count = 1
+                shift = False
+                while aux != None:
+                    if aux.empty:
+                        shift = True
+                        if aux.right_sister != None and not aux.right_sister.empty:
+                            aux.left_node = aux.right_sister.left_node
+                            aux.right_sister.left_node = None
+                            aux.right_node = aux.right_sister.right_node
+                            aux.right_sister.right_node = None
+                        elif aux.right_sister != None and aux.right_sister.empty:
+                            if count % 3 != 0:
+                                aux.left_node = aux.right_sister.right_sister.left_node
+                                aux.right_sister.right_sister.left_node = None
+                                aux.right_node = aux.right_sister.right_sister.right_node
+                                aux.right_sister.right_sister.right_node = None
+                    is_left_node = aux.left_node != None and aux.left_node.node_id == node_id
+                    is_right_node = aux.right_node != None and aux.right_node.node_id == node_id
+                    if is_left_node or is_right_node:
+                        return int(not shift)
+                    self.update_level(1)
+                    self.update_level(0)
+                    aux = aux.right_sister
+                    count += 1
+                return 1
             else:
                 return 1
 
