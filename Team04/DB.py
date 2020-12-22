@@ -52,3 +52,51 @@ class DB():
             self.rec_BD = self.rec_BD.siguiente
 
         return 0
+
+    # Busca Base De Datos En La Lista Y Retorna El Nodo
+    def searchDB2(self,database):
+        # Pasa Como Parametro Nombre De BD
+        # Retorna Nodo Si La Encuentra, 0 Si No
+
+        # Recorrer Lista De BD
+        self.rec_BD = self.primero
+        while self.rec_BD != None:
+
+            # Verificar Si NodoBD Es El Buscado
+            if self.rec_BD.nameDB == database:
+                return self.rec_BD
+
+            self.rec_BD = self.rec_BD.siguiente
+
+        return 0
+
+    # Devolver Listado De Bases De Datos
+    def showDatabases(self):
+        # Lista Que Se Retornará
+        BD_list = []
+
+        # Recorrer Lista De BD Y Agregarlas A Lista De Retorno
+        self.rec_BD = self.primero
+        while self.rec_BD != None:
+            BD_list.append(self.rec_BD.nameDB)
+            self.rec_BD = self.rec_BD.siguiente
+
+        # Retornar Lista De BD
+        return BD_list
+
+    # UPDATE
+    def alterDatabase(self, databaseOld, databaseNew):
+
+        # Buscar BD Para Obtener Nodo
+        self.BD_old = self.searchDB2(databaseOld)
+        if self.BD_old == 0: # No Encontro La BD
+            return 1
+        else: # Encuentra La BD
+            # Buscar De Nuevo En Lista De BD Si El Nuevo Nombre No Está Ya Utilizado
+            self.BD_new = self.searchDB(databaseNew)
+            if self.BD_new == 1:
+                return 3 # Nuevo Nombre Ya Existe
+            else:
+                # Actualizar
+                self.BD_old.nameDB = databaseNew
+                return 0
