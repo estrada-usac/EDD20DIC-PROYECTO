@@ -23,5 +23,6 @@ Estructura: [Método_Desarrollando/Nombre_Desarrollador/Estado_De_Desarrollo(%)]
 
 Actualizado: 23/12/2020 03:51:00:
 
-extractTable(database: str, table: str) -> list//Juan
+extractTable(database: str, table: str) -> list//Juan:
+
 extractRangeTable(database: str, table: str, columnNumber: int, lower: any, upper: any) -> list//Juan
