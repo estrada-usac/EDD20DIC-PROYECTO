@@ -27,5 +27,7 @@ Actualizado: 23/12/2020 03:51:00:
 
 [ extractRangeTable/Juan Carlos/10%      ]:
 
+Actualizado: 23/12/2020 13:11:00:
+
 
 
