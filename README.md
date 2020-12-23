@@ -2,10 +2,10 @@
 Proyecto Estructuras De Datos
 
 ---------------- Implementación De Administrador De Almacenamiento -----------------
--- En este apartado iremos actualizando el método que se va desarrollando y quién --
--- lo está desarrollando, si alguien quiere implementar un método, verificar antes--
--- en este apartado si nadie más lo está implementando. Ir actualizando los Issues--
--- y Readme.md                                                                    --
+ En este apartado iremos actualizando el método que se va desarrollando y quién 
+ lo está desarrollando, si alguien quiere implementar un método, verificar antes
+ en este apartado si nadie más lo está implementando. Ir actualizando los Issues
+ y Readme.md                                                                    
 ------------------------------------------------------------------------------------
 --> Estructura: [Método_Desarrollando/Nombre_Desarrollador/Estado_De_Desarrollo(%)]
 ------------------------------------------------------------------------------------
@@ -15,3 +15,5 @@ Proyecto Estructuras De Datos
 [ dropDatabase/Erick_Estrada/90%   ] (Falta Binario) 
 [ createTable/Erick_Estrada/0%     ]
 [ showTables/Erick_Estrada/0%      ] 
+
+Actualizado: 23/12/2020 21:39:00
