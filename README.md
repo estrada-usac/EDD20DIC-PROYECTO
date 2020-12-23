@@ -29,7 +29,9 @@ Actualizado: 23/12/2020 03:51:00:
 
 [ alterTable/Juan Carlos/100%      ]:
 
-[ dropTable/Juan Carlos/10%      ]:
+[ dropTable/Juan Carlos/100%      ]:
+
+[ insert/Juan Carlos/10%      ]:
 
 Actualizado: 23/12/2020 16:11:00:
 
