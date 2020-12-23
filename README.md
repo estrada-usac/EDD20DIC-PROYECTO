@@ -9,11 +9,11 @@ Proyecto Estructuras De Datos
 ------------------------------------------------------------------------------------
 --> Estructura: [Método_Desarrollando/Nombre_Desarrollador/Estado_De_Desarrollo(%)]
 ------------------------------------------------------------------------------------
-[ createDatabase/Erick_Estrada/90% ] (Falta Binario)
-[ showDatabases/Erick_Estrada/100% ]
-[ alterDatabase/Erick_Estrada/90%  ] (Falta Binario)
-[ dropDatabase/Erick_Estrada/90%   ] (Falta Binario) 
-[ createTable/Erick_Estrada/0%     ]
-[ showTables/Erick_Estrada/0%      ] 
+ createDatabase/Erick_Estrada/90%  (Falta Binario)
+ showDatabases/Erick_Estrada/100% 
+ alterDatabase/Erick_Estrada/90%   (Falta Binario)
+ dropDatabase/Erick_Estrada/90%    (Falta Binario) 
+ createTable/Erick_Estrada/0%     
+ showTables/Erick_Estrada/0%      
 
 Actualizado: 23/12/2020 21:39:00
