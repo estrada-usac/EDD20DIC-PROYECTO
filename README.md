@@ -23,9 +23,12 @@ Estructura: [Método_Desarrollando/Nombre_Desarrollador/Estado_De_Desarrollo(%)]
 
 Actualizado: 23/12/2020 03:51:00:
 
-[ extractTable/Juan Carlos/10%      ]:
+[ extractTable/Juan Carlos/100%      ]:
 
-[ extractRangeTable/Juan Carlos/10%      ]:
+[ extractRangeTable/Juan Carlos/100%      ]:
+
+[ alterTable/Juan Carlos/10%      ]:
+
 
 Actualizado: 23/12/2020 13:11:00:
 
