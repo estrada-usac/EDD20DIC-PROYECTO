@@ -33,7 +33,9 @@ Actualizado: 23/12/2020 03:51:00:
 
 [ insert/Juan Carlos/50%      ]:
 
-Actualizado: 23/12/2020 16:11:00:
+[ extractRow/Juan Carlos/50%      ]:
+
+Actualizado: 23/12/2020 18:11:00:
 
 
 
