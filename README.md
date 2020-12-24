@@ -39,7 +39,9 @@ Actualizado: 23/12/2020 03:51:00:
 
 [ update/Juan Carlos/50%      ]:
 
-Actualizado: 23/12/2020 20:11:00:
+[ truncate/Juan Carlos/80%      ]:
+
+Actualizado: 23/12/2020 20:30:00:
 
 
 
