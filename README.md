@@ -35,6 +35,8 @@ Actualizado: 23/12/2020 03:51:00:
 
 [ extractRow/Juan Carlos/50%      ]:
 
+[ update/Juan Carlos/50%      ]:
+
 Actualizado: 23/12/2020 18:11:00:
 
 
