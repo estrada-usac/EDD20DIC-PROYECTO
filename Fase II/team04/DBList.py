@@ -27,7 +27,7 @@ class DBList:
         else:
             aux = self.first
             while True:
-                if aux.name == node.name:
+                if aux.name == node.name and aux.mode == mode:
                     return 1
                 if aux.next == None:
                     break
@@ -57,6 +57,36 @@ class DBList:
                 return aux
             aux = aux.next
         return None
+    
+    # Descripción:
+    #     Devuelve una lista con todos los nodos correspondientes a una misma base de datos
+    # Parámetros:
+    #     name:str - El nombre de la base de datos cuyos nodos se desean obtener
+    # Retorno:
+    #     Si existe al menos un nodo para esa base de datos, devuelve una lista con todos los nodos
+    #     Si no existe ningún nodo para esa base de datos, devuelve una lista vacía
+    def find_all(self, name):
+        databases = []
+        aux = self.first
+        while aux != None:
+            if aux.name == name:
+                databases.append(aux)
+            aux = aux.next
+        return databases
+
+    # Descripción:
+    #     Devuelve una lista con los nombres de todas las bases de datos sin repetición.
+    # Valores de retorno:
+    #     Si existe al menos una base de datos, devuelve una lista con todas las bases de datos almacenadas
+    #     Si no existe ninguna base de datos, devuelve una lista vacía
+    def list_databases_diff(self):
+        databases = []
+        aux = self.first
+        while aux != None:
+            if aux.name not in databases:
+                databases.append(aux.name)
+            aux = aux.next
+        return databases
 
     # Descripción:
     #     Elimina de la lista el nodo que tenga el nombre indicado
