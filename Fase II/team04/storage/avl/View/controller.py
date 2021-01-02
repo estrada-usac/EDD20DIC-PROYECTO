@@ -4,8 +4,8 @@
 # Developers: SG#16
 
 
-import storage.avl.DataAccessLayer.reports as reports
-import storage.avlMode as AVLTreeStructure
+from storage.avl.DataAccessLayer import reports
+from storage.avl import avlMode as AVLTreeStructure
 from storage.avl.DataAccessLayer.handler import Handler
 
 

@@ -41,3 +41,4 @@ class Table:
             PKCols = self.hiddenPK
             self.hiddenPK += 1
         return self.tuples.update(register, cols, PKCols)
+

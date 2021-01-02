@@ -92,7 +92,7 @@ def loadCSV(file: str, database: str, table: str) -> list:
     return TPL.loadCSV(file, database, table)
 
 
-def extractRow(database: str, table: str, columns: list) -> int:
+def extractRow(database: str, table: str, columns: list) -> list:
     return TPL.extractRow(database, table, columns)
 
 
