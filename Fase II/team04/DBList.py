@@ -17,11 +17,12 @@ class DBList:
     # Parámetros:
     #     name:str - El nombre de la base de datos
     #     mode:str - El tipo de la base de datos
+    #     encoding:str - El tipo de codificación que utiliza la base de datos
     # Retorno:
     #     0 - Nodo creado exitosamente
     #     1 - Ya existe un nodo con el nombre indicado (base de datos repetida)
-    def create(self, name, mode):
-        node = DBNode(name, mode)
+    def create(self, name, mode, encoding):
+        node = DBNode(name, mode, encoding)
         if self.first == None:
             self.first = node
         else:
@@ -123,11 +124,12 @@ class DBList:
     # Retorno:
     #     0 - Modificación realizada exitosamente
     #     1 - No se encontró ninguna base de datos con el nombre indicado
-    def modify(self, name, new_mode):
+    def modify(self, name, new_mode, new_encoding):
         aux = self.first
         while aux != None:
             if aux.name == name:
                 aux.mode = new_mode
+                aux.encoding = new_encoding
                 return 0
             aux = aux.next
         return 1

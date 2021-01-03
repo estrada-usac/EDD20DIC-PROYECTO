@@ -13,8 +13,10 @@ from storage.dict import DictMode
 from storage.b import Serializable
 from DBList import DBList
 import re
+import codificar
 
 MODES = ['avl', 'b', 'bplus', 'dict', 'isam', 'json', 'hash']
+VALID_ENCODING = ["utf8", "iso-8859-1", "ascii"]
 DB_NAME_PATTERN = "^[a-zA-Z][a-zA-Z0-9#@$_]*"
 
 # Obteniendo la lista general de bases de datos a partir del binario almacenado
@@ -36,7 +38,11 @@ except FileNotFoundError:
 #     0 - Operación exitosa
 #     1 - Error en la operación
 #     2 - Base de datos existente
+#     3 - Modo incorrecto
+#     4 - Codificación incorrecta
 def createDatabase(database: str, mode: str, encoding: str) -> int:
+    if encoding not in VALID_ENCODING:
+        return 4
     if databases.search(database) != None:
         return 2
     if mode == "avl":
@@ -56,7 +62,7 @@ def createDatabase(database: str, mode: str, encoding: str) -> int:
     else:
         return 3
     if code == 0:
-        databases.create(database, mode)
+        databases.create(database, mode, encoding)
         try:
             for i in range(5):
                 try:
@@ -232,15 +238,190 @@ def showTables(database: str) -> list:
             result += HashMode.showTables(database)
     return result
 
-def codificar(texto, condificacion):
-    pass
-
-def insert(database: str, table: str, register: list):
-    db = databases.search(database)
-    if db == None:
+# Descripción:
+#     Elimina la llave primaria actual en la información de la tabla, manteniendo el índice
+#     actual de la estructura del árbol hasta que se invoque de nuevo el alterAddPK()
+# Parámetros:
+#     database:str - El nombre de la base de datos a utilizar
+#     table:str - El nombre de la tabla a utilizar
+# Valores de retorno:
+#     0 - Operación exitosa
+#     1 - Error en la operación
+#     2 - database no existente
+#     3 - table no existente
+#     4 - pk no existente
+def alterDropPK(database: str, table: str) -> int:
+    dbs = databases.find_all(database)
+    if dbs == []:
         return 2
-    for x in range(0, len(register)):
-        register[x] = codificar(register[x], db.encoding)
-    if db.mode == "avl":
-        result = avlMode.insert(database, table, register)
-    pass
+    for db in dbs:
+        if db.mode == "avl":
+            result = avlMode.alterDropPK(database, table)
+        elif db.mode == "b":
+            result = BMode.alterDropPK(database, table)
+        elif db.mode == "bplus":
+            result = BPlusMode.alterDropPK(database, table)
+        elif db.mode == "dict":
+            result = DictMode.alterDropPK(database, table)
+        elif db.mode == "isam":
+            result = ISAMMode.alterDropPK(database, table)
+        elif db.mode == "json":
+            result = jsonMode.alterDropPK(database, table)
+        elif db.mode == "hash":
+            result = HashMode.alterDropPK(database, table)
+        if result != 3:
+            break
+    return result
+
+# Descripción:
+#     Agrega una columna al final de cada registro de la tabla y base de datos especificada
+# Parámetros:
+#     database:str - El nombre de la base de datos a utilizar
+#     table:str - El nombre de la tabla a utilizar
+#     default:any - Es el valor que se establecerá en a la nueva columna para los registros existentes
+# Valores de retorno:
+#     0 - Operación exitosa
+#     1 - Error en la operación
+#     2 - database no existente
+#     3 - table no existente
+def alterAddColumn(database: str, table: str, default: any) -> int:
+    dbs = databases.find_all(database)
+    if dbs == []:
+        return 2
+    for db in dbs:
+        if db.mode == "avl":
+            result = avlMode.alterAddColumn(database, table, default)
+        elif db.mode == "b":
+            result = BMode.alterAddColumn(database, table, default)
+        elif db.mode == "bplus":
+            result = BPlusMode.alterAddColumn(database, table, default)
+        elif db.mode == "dict":
+            result = DictMode.alterAddColumn(database, table, default)
+        elif db.mode == "isam":
+            result = ISAMMode.alterAddColumn(database, table, default)
+        elif db.mode == "json":
+            result = jsonMode.alterAddColumn(database, table, default)
+        elif db.mode == "hash":
+            result = HashMode.alterAddColumn(database, table, default)
+        if result != 3:
+            break
+    return result
+
+# Descripción:
+#     Eliminar una n-ésima columna de cada registro de la tabla excepto si son llaves primarias
+# Parámetros:
+#     database:str - El nombre de la base de datos a utilizar
+#     table:str - El nombre de la tabla a utilizar
+#     columnNumber:int - El número de la columna a eliminar
+# Valores de retorno:
+#     0 - Operación exitosa
+#     1 - Error en la operación
+#     2 - database no existe
+#     3 - table no existe
+#     4 - Llave no puede eliminarse o tabla quedarse sin columnas
+#     5 - Columna fuera de límites
+def alterDropColumn(database: str, table: str, columnNumber: int) -> int:
+    dbs = databases.find_all(database)
+    if dbs == []:
+        return 2
+    for db in dbs:
+        if db.mode == "avl":
+            result = avlMode.alterDropColumn(database, table, columnNumber)
+        elif db.mode == "b":
+            result = BMode.alterDropColumn(database, table, columnNumber)
+        elif db.mode == "bplus":
+            result = BPlusMode.alterDropColumn(database, table, columnNumber)
+        elif db.mode == "dict":
+            result = DictMode.alterDropColumn(database, table, columnNumber)
+        elif db.mode == "isam":
+            result = ISAMMode.alterDropColumn(database, table, columnNumber)
+        elif db.mode == "json":
+            result = jsonMode.alterDropColumn(database, table, columnNumber)
+        elif db.mode == "hash":
+            result = HashMode.alterDropColumn(database, table, columnNumber)
+        if result != 3:
+            break
+    return result
+
+# Descripción:
+#     Convierte un string en bytes utilizando la codificación especificada
+# Parámetros:
+#     text:str - El texto que se desea codificar
+#     encoding:str - El tipo de codificación que se desea utilizar
+# Valores de retorno:
+#     bytes - El objeto de tipo bytes con el texto codificado
+#     None - Error durante la codificación
+def codificar(text, encoding):
+    if encoding not in VALID_ENCODING:
+        return None
+    try:
+        if encoding == "utf8":
+            return bytes(text, encoding = "utf-8")
+        if encoding == "iso-8859-1":
+            return bytes(text, encoding = "iso-8859-1")
+        if encoding == "ascii":
+            return bytes(text, encoding = "ascii")
+        return None
+    except:
+        return None
+
+# Descripción:
+#      Inserta un registro en la estructura de datos asociada a la tabla y la base de datos
+# Parámetros:
+#      database:str - El nombre de la base de datos a utilizar
+#      table:str - El nombre de la tabla a utilizar
+#      register:list - Es una lista de elementos que represent un registro
+# Valores de retorno:
+#      0 - Operación exitosa
+#      1 - Error en la operación
+#      2 - database no existente
+#      3 - table no existente
+#      4 - Llave primaria duplicada
+#      5 - Columnas fuera de límites
+def insert(database: str, table: str, register: list):
+    dbs = databases.find_all(database)
+    if dbs == []:
+        return 2
+    for db in dbs:
+#        for x in range(0, len(register)):
+#            aux = codificar(register[x], db.encoding)
+#            if aux == None:
+#                return 1
+#            register[x] = aux
+        if db.mode == "avl":
+            result = avlMode.insert(database, table, register)
+        elif db.mode == "b":
+            result = BMode.insert(database, table, register)
+        elif db.mode == "bplus":
+            result = BPlusMode.insert(database, table, register)
+        elif db.mode == "dict":
+            result = DictMode.insert(database, table, register)
+        elif db.mode == "isam":
+            result = ISAMMode.insert(database, table, register)
+        elif db.mode == "json":
+            result = jsonMode.insert(database, table, register)
+        elif db.mode == "hash":
+            result = HashMode.insert(database, table, register)
+        if result != 3:
+            break
+    return result
+
+# Descripción:
+#     Carga un archivo CSV de una ruta especificada indicando la base de datos y tabla donde será almacenado
+# Parámetros:
+#     file:str - Ruta del archivo CSV a utilizar
+#     database:str - El nombre de la base de datos a utilizar
+#     table:str - El nombre de la tabla a utilizar
+# Valores de retorno:
+#     Lista con los valores enteros que devuelve el insert por cada fila del CSV
+#     Si ocurrió un error o el archivo CSV no tiene filas devuelve una lista vacía
+def loadCSV(file: str, database: str, table: str) -> list:
+    try:
+        result = []
+        with open(file, "r") as csv:
+            for line in csv:
+                register = line.split(",")
+                result += insert(database, table, register)
+        return result
+    except:
+        return []

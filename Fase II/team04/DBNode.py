@@ -5,7 +5,8 @@
 
 # Nodos utilizados en las listas DBList
 class DBNode:
-    def __init__(self, name, mode):
+    def __init__(self, name, mode, encoding):
         self.name = name
         self.mode = mode
+        self.encoding = encoding
         self.next = None
