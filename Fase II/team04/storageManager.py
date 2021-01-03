@@ -425,3 +425,185 @@ def loadCSV(file: str, database: str, table: str) -> list:
         return result
     except:
         return []
+
+def delete(database: str, table: str, columns: list):
+	db = databases.search(database)
+	if db == None:
+		return 2
+	if db.mode == "avl":
+		result = avlMode.delete(database, table, columns)
+	elif db.mode == "b":
+		result = BMode.delete(database, table, columns)
+	elif db.mode == "bplus":
+		result = BPlusMode.delete(database, table, columns)
+	elif db.mode == "dict":
+		result = DictMode.delete(database, table, columns)
+	elif db.mode == "isam":
+		result = ISAMMode.delete(database, table, columns)
+	elif db.mode == "json":
+		result = jsonMode.delete(database, table, columns)
+	elif db.mode == "hash":
+		result = HashMode.delete(database, table, columns)
+    return result
+
+def extractTable(database,table):
+	db = databases.search(database)
+	if db == None:
+		return None
+	if db.mode == "avl":
+		result = avlMode.extractTable(database,table)
+	elif db.mode == "b":
+		result = BMode.extractTable(database,table)
+	elif db.mode == "bplus":
+		result = BPlusMode.extractTable(database,table)
+	elif db.mode == "dict":
+		result = DictMode.extractTable(database,table)
+	elif db.mode == "isam":
+		result = ISAMMode.extractTable(database,table)
+	elif db.mode == "json":
+		result = jsonMode.extractTable(database,table)
+	elif db.mode == "hash":
+		result = HashMode.extractTable(database,table)
+    return result
+
+def extractRangeTable(database: str, table: str, columnNumber: int, lower: any, upper: any) -> list:
+	db = databases.search(database)
+	if db == None:
+		return None
+	if db.mode == "avl":
+		result = avlMode.extractRangeTable(database,table,columnNumber,lower, upper)
+	elif db.mode == "b":
+		result = BMode.extractRangeTable(database,table,columnNumber,lower, upper)
+	elif db.mode == "bplus":
+		result = BPlusMode.extractRangeTable(database,table,columnNumber,lower, upper)
+	elif db.mode == "dict":
+		result = DictMode.extractRangeTable(database,table,columnNumber,lower, upper)
+	elif db.mode == "isam":
+		result = ISAMMode.extractRangeTable(database,table,columnNumber,lower, upper)
+	elif db.mode == "json":
+		result = jsonMode.extractRangeTable(database,table,columnNumber,lower, upper)
+	elif db.mode == "hash":
+		result = HashMode.extractRangeTable(database,table,columnNumber,lower, upper)
+    return result	
+
+def alterTable(database, tableOld, tableNew):
+
+	db = databases.search(database)
+	if db == None:
+		return 2
+	if db.mode == "avl":
+		result = avlMode.alterTable(database,tableOld,tableNew)
+	elif db.mode == "b":
+		result = BMode.alterTable(database,tableOld,tableNew)
+	elif db.mode == "bplus":
+		result = BPlusMode.alterTable(database,tableOld,tableNew)
+	elif db.mode == "dict":
+		result = DictMode.alterTable(database,tableOld,tableNew)
+	elif db.mode == "isam":
+		result = ISAMMode.alterTable(database,tableOld,tableNew)
+	elif db.mode == "json":
+		result = jsonMode.alterTable(database,tableOld,tableNew)
+	elif db.mode == "hash":
+		result = HashMode.alterTable(database,tableOld,tableNew)
+	return result 
+
+def dropTable(database,table):
+
+	db = databases.search(database)
+	if db == None:
+		return 2
+	if db.mode == "avl":
+		result = avlMode.dropTable(database, table)
+	elif db.mode == "b":
+		result = BMode.dropTable(database, table)
+	elif db.mode == "bplus":
+		result = BPlusMode.dropTable(database, table)
+	elif db.mode == "dict":
+		result = DictMode.dropTable(database, table)
+	elif db.mode == "isam":
+		result = ISAMMode.dropTable(database, table)
+	elif db.mode == "json":
+		result = jsonMode.dropTable(database, table)
+	elif db.mode == "hash":
+		result = HashMode.dropTable(database, table)
+	return result
+
+def extractRow(database, table, columns):
+	db = databases.search(database)
+	if    db == None:
+		return 2
+	if db.mode == "avl":
+		result = avlMode.extractRow(database, table, columns)
+	elif db.mode == "b":
+		result = BMode.extractRow(database, table, columns)
+	elif db.mode == "bplus":
+		result = BPlusMode.extractRow(database, table, columns)
+	elif db.mode == "dict":
+		result = DictMode.extractRow(database, table, columns)
+	elif db.mode == "isam":
+		result = ISAMMode.extractRow(database, table, columns)
+	elif db.mode == "json":
+		result = jsonMode.extractRow(database, table, columns)
+	elif db.mode == "hash":
+		result = HashMode.extractRow(database, table, columns)
+    return result
+
+def update(database, table, register, columns):
+	db = databases.search(database)
+	if db == None:
+		return 2
+	if db.mode == "avl":
+		result = avlMode.update(database, table, register, columns)
+	elif db.mode == "b":
+		result = BMode.update(database, table, register, columns)
+	elif db.mode == "bplus":
+		result = BPlusMode.update(database, table, register, columns)
+	elif db.mode == "dict":
+		result = DictMode.update(database, table, register, columns)
+	elif db.mode == "isam":
+		result = ISAMMode.update(database, table, register, columns)
+	elif db.mode == "json":
+		result = jsonMode.update(database, table, register, columns)
+	elif db.mode == "hash":
+		result = HashMode.update(database, table, register, columns)
+    return result
+
+def truncate(database, table):
+	db = databases.search(database)
+	if db == None:
+		return 2
+	if db.mode == "avl":
+		result = avlMode.truncate(database, table)
+	elif db.mode == "b":
+		result = BMode.truncate(database, table)
+	elif db.mode == "bplus":
+		result = BPlusMode.truncate(database, table)
+	elif db.mode == "dict":
+		result = DictMode.truncate(database, table)
+	elif db.mode == "isam":
+		result = ISAMMode.truncate(database, table)
+	elif db.mode == "json":
+		result = jsonMode.truncate(database, table)
+	elif db.mode == "hash":
+		result = HashMode.truncate(database, table)
+	return result
+
+def alterAddPK(database, table, columns):
+	db = databases.search(database)
+	if db == None:
+		return 2
+	if db.mode == "avl":
+		result = avlMode.alterAddPK(database, table, columns)
+	elif db.mode == "b":
+		result = BMode.alterAddPK(database, table, columns)
+	elif db.mode == "bplus":
+		result = BPlusMode.alterAddPK(database, table, columns)
+	elif db.mode == "dict":
+		result = DictMode.alterAddPK(database, table, columns)
+	elif db.mode == "isam":
+		result = ISAMMode.alterAddPK(database, table, columns)
+	elif db.mode == "json":
+		result = jsonMode.alterAddPK(database, table, columns)
+	elif db.mode == "hash":
+		result = HashMode.alterAddPK(database, table, columns)
+	return result
