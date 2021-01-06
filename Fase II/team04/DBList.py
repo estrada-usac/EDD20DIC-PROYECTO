@@ -117,6 +117,34 @@ class DBList:
             aux = aux.next
 
     # Descripción:
+    #     Elimina de la lista el nodo que tenga el nombre y modo indicados
+    # Parámetros:
+    #     name:str - El nombre de la base de datos cuyo nodo se desea eliminar
+    #     mode:str - El modo de almacenamiento de la base de datos
+    # Retorno:
+    #     0 - Nodo eliminado exitosamente
+    #     1 - No se encontró ninguna base de datos con ese nombre
+    def delete_sp(self, name, mode):
+        if self.first == None:
+            return 1
+
+        if self.first.name == name and self.first.mode == mode:
+            if self.first.next == None:
+                self.first = None
+            else:
+                self.first = self.first.next
+            return 0
+
+        aux = self.first
+        while True:
+            if aux.next == None:
+                return 1
+            if aux.next.name == name and aux.next.mode == mode:
+                aux.next = aux.next.next
+                return 0
+            aux = aux.next
+
+    # Descripción:
     #     Modifica la información contenida en un nodo
     # Parámetros:
     #     name:str - El nombre de la base de datos cuyo nodo se desea modificar
@@ -133,3 +161,19 @@ class DBList:
                 return 0
             aux = aux.next
         return 1
+    
+    # Descripción:
+    #     Devuelve el TBNode cuyo nombre coincida con el indicado
+    # Parámetros:
+    #     database:str - El nombre de la base de datos a la que pertenece la tabla
+    #     table:str - El nombre de la tabla cuyo nodo se desea encontrar
+    # Valores de retorno:
+    #     TBNode - El nodo cuyo name coincide con el nombre de la tabla
+    #     None - Si no encuentra ningúna tabla con el nombre indicado
+    def find_table(self, database, table):
+        dbs = self.find_all(database)
+        for db in dbs:
+            tb = db.tables.search(table)
+            if tb != None:
+                return tb
+        return None
