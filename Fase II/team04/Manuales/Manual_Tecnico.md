@@ -100,6 +100,33 @@ Descripción: Elimina una tabla especificada en una base de datos con el nombre 
 •	Descripción: Busca un nodo en la lista utilizando su nombre como parámetro de búsqueda.
 
 
+Métodos de DBList.py:
+•	Método: create(self, name, mode, encoding):
+•	Descripción: Crea un nuevo nodo con la información de la base de datos
+
+•	Método: show(self):
+Descripción: Imprime en consola la información de todos los nodos en la lista.
+
+•	Método: search(self, name):
+•	Descripción: Busca un nodo en la lista utilizando su nombre como parámetro de búsqueda.
+
+•	Método: find_all(self, name):
+Descripción: Devuelve una lista con todos los nodos correspondientes a una misma base de datos.
+
+•	Método: list_databases_diff(self):
+Descripción: Devuelve una lista con los nombres de todas las bases de datos sin repetición.
+
+•	Método: delete(self, name):
+Descripción: Elimina de la lista el nodo que tenga el nombre indicado.
+
+•	Método: modify(self, name, new_mode, new_encoding):
+Descripción: Modifica la información contenida en un nodo
+
+•	Método: find_table(self, database, table):
+Descripción: Devuelve el TBNode cuyo nombre coincida con el indicado.
+
+
+
 
 
 •	Método: delete(self, name):
